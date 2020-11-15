@@ -38,7 +38,7 @@ reload_package_github <- function(repo) {
   devtools::install_github(repo)
   pack <- package_name
   library(pack, character.only = TRUE)
-  
+  cat(paste(pack, "has been reloaded into R session"))
 }
 
 
