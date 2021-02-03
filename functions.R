@@ -43,9 +43,31 @@ reload_package_github <- function(repo) {
 
 
 
-
 reload_package_github("stevecondylios/RSeleniumHelpers")
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Infox for the opposite of %in% for more expressive code
+
+
+'%not_in%' <- function(lhs, rhs) {
+  !(lhs %in% rhs)
+}
+
+
+"b" %in% c("a", "b", "c")
+"b" %not_in% c("a", "b", "c")
 
 
 
