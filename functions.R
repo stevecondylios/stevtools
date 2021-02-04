@@ -11,7 +11,11 @@
 
 
 
-
+#### 
+# Function that acts like ruby's _
+i.e. an alias for .Last.value 
+a <- .Last.value
+a <- _
 
 
 
