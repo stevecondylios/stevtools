@@ -80,6 +80,13 @@ reload_package_github("stevecondylios/RSeleniumHelpers")
 
 
 
+# Generate a time stamp
+
+time_stamp <- function() {
+  Sys.time() %>% strftime("%Y%m%d%H%M%S")
+}
+
+time_stamp()
 
 
 
