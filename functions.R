@@ -53,7 +53,16 @@ reload_package_github("stevecondylios/RSeleniumHelpers")
 
 
 
+# When authoring a package, it's annoying to have to build it and reload it. Do it all in one function call!
 
+barl <- function() {
+  # barl: build and reload library 
+  devtools::document(roclets = c('rd', 'collate', 'namespace'))
+  devtools::build()
+  install.packages("../dictionary_0.1.0.tar.gz", repos=NULL, type="source")
+  library(dictionaRy)
+}
+# Now when you knit the readme, it will be using the new package version. 
 
 
 
