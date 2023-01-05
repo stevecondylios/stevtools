@@ -62,7 +62,7 @@ reload_package_github("stevecondylios/RSeleniumHelpers")
 
 
 
-# Infox for the opposite of %in% for more expressive code
+# Infix for the opposite of %in% for more expressive code
 
 
 '%not_in%' <- function(lhs, rhs) {
@@ -87,6 +87,118 @@ time_stamp <- function() {
 }
 
 time_stamp()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Function to easily save a wordcloud, plotly or anything else that's html/js
+# as a png for immediate use
+
+save_html_as_png <- function(thing_to_save, file_name) {
+  # This function takes a rendered (html/js) plot, saves it as an html file, 
+  # then uses webshot to take a screenshot of it
+  
+  # file_name example: "myfile.png" or "/some/directory/myfile.png"
+  # thing_to_save could be a wordcloud or plotly (anything html based)
+  
+  delay = 5 # This could be a function argument but is set here for now 
+   
+  library(webshot)
+  library(htmlwidgets)
+  
+  tempd <- tempdir() 
+  tempf <- paste0(tempfile(), ".html")
+  
+  saveWidget(thing_to_save, tempf, selfcontained = F)
+  webshot(tempf, file_name, delay = delay, vwidth = 700, vheight=700)
+  
+}
+
+
+# Example usage
+save_html_as_png(wc, "scwc.png")
+save_html_as_png(p2, "sc2.png")
+
+
+
+### Example
+
+# Make a wordcloud
+# From: https://www.data-to-viz.com/graph/wordcloud.html
+
+# Libraries
+library(tidyverse)
+library(hrbrthemes)
+library(tm)
+library(proustr)
+
+# Load dataset from github
+data <- read.table("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/14_SeveralIndepLists.csv", header=TRUE) 
+to_remove <- c("_|[0-9]|\\.|function|^id|script|var|div|null|typeof|opts|if|^r$|undefined|false|loaded|true|settimeout|eval|else|artist")
+data <- data %>% filter(!grepl(to_remove, word)) %>% filter(!word %in% stopwords('fr')) %>% filter(!word %in% proust_stopwords()$word)
+
+# The wordcloud 2 library is the best option for wordcloud in R
+library(wordcloud2)
+
+# prepare a list of word (50 most frequent)
+mywords <- data %>%
+  filter(artist=="nekfeu") %>%
+  dplyr::select(word) %>%
+  group_by(word) %>%
+  summarize(freq=n()) %>%
+  arrange(freq) %>%
+  tail(30)
+
+# Make the plot
+wordcloud2(mywords,  minRotation = -pi/2, maxRotation = -pi/2,
+         backgroundColor = "white", color="#69b3a2")
+
+# Save it as an object
+wc <- wordcloud2(mywords,  minRotation = -pi/2, maxRotation = -pi/2,
+         backgroundColor = "white", color="#69b3a2")
+
+# Save it as png
+save_html_as_png(wc, "ssss.png")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
