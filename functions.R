@@ -27,7 +27,7 @@ a <- _
 reload_package_github <- function(repo) {
   # This function allows you to really quickly/easily get the changes you made to an R package
   # from github into your current R session, without needing to restart the R session, mess around
-  # with tarballs, or any other rigmarale
+  # with tarballs, or any other rigmarole
   
   # Based on ?devtools::install_github
   # e.g. "stevecondylios/RSeleniumHelpers"
@@ -38,7 +38,9 @@ reload_package_github <- function(repo) {
   package_name <- temp[[1]][2]
   
   tryCatch(detach(paste0("package:", package_name), unload=TRUE), error = function(e) {} )
-  
+
+  # Note: for private repos, you must have GITHUB_PAT variable in Sys.getenv()
+  # then devtools::install_github(repo) will 'just work', even for private repos
   devtools::install_github(repo)
   pack <- package_name
   library(pack, character.only = TRUE)
