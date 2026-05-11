@@ -1,6 +1,6 @@
 
-# Function that pastes from clipboard to an R object 
-# and one that does the opposite 
+# Function that pastes from clipboard to an R object
+# and one that does the opposite
 
 # a <- system("pbpaste", intern = TRUE)
 
@@ -11,9 +11,9 @@
 
 
 
-#### 
+####
 # Function that acts like ruby's _
-i.e. an alias for .Last.value 
+i.e. an alias for .Last.value
 a <- .Last.value
 a <- _
 
@@ -27,16 +27,16 @@ a <- _
 reload_package_github <- function(repo) {
   # This function allows you to really quickly/easily get the changes you made to an R package
   # from github into your current R session, without needing to restart the R session, mess around
-  # with tarballs, or any other rigmarole
-  
+  # with tarballs, or any other rigmarale
+
   # Based on ?devtools::install_github
   # e.g. "stevecondylios/RSeleniumHelpers"
-  
+
   temp <- strsplit(repo, "/")
-  
+
   user_name <- temp[[1]][1]
   package_name <- temp[[1]][2]
-  
+
   tryCatch(detach(paste0("package:", package_name), unload=TRUE), error = function(e) {} )
 
   # Note: for private repos, you must have GITHUB_PAT variable in Sys.getenv()
@@ -58,15 +58,16 @@ reload_package_github("stevecondylios/RSeleniumHelpers")
 # When authoring a package, it's annoying to have to build it and reload it. Do it all in one function call!
 
 barl <- function() {
-  # barl: build and reload library 
+  # barl: build and reload library
   devtools::document(roclets = c('rd', 'collate', 'namespace'))
   devtools::build()
-  install.packages("../dictionary_0.1.0.tar.gz", repos=NULL, type="source")
-  library(dictionaRy)
+  install.packages("../priceR_1.0.4.tar.gz", repos=NULL, type="source")
+  library(priceR)
 }
-# Now when you knit the readme, it will be using the new package version. 
-
-
+# Now when you knit the readme, it will be using the new package version.
+# Reminder:
+# R CMD check --as-cran priceR_1.0.4.tar.gz
+# etc
 
 
 
@@ -129,23 +130,23 @@ time_stamp()
 # as a png for immediate use
 
 save_html_as_png <- function(thing_to_save, file_name) {
-  # This function takes a rendered (html/js) plot, saves it as an html file, 
+  # This function takes a rendered (html/js) plot, saves it as an html file,
   # then uses webshot to take a screenshot of it
-  
+
   # file_name example: "myfile.png" or "/some/directory/myfile.png"
   # thing_to_save could be a wordcloud or plotly (anything html based)
-  
-  delay = 5 # This could be a function argument but is set here for now 
-   
+
+  delay = 5 # This could be a function argument but is set here for now
+
   library(webshot)
   library(htmlwidgets)
-  
-  tempd <- tempdir() 
+
+  tempd <- tempdir()
   tempf <- paste0(tempfile(), ".html")
-  
+
   saveWidget(thing_to_save, tempf, selfcontained = F)
   webshot(tempf, file_name, delay = delay, vwidth = 700, vheight=700)
-  
+
 }
 
 
@@ -167,7 +168,7 @@ library(tm)
 library(proustr)
 
 # Load dataset from github
-data <- read.table("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/14_SeveralIndepLists.csv", header=TRUE) 
+data <- read.table("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/14_SeveralIndepLists.csv", header=TRUE)
 to_remove <- c("_|[0-9]|\\.|function|^id|script|var|div|null|typeof|opts|if|^r$|undefined|false|loaded|true|settimeout|eval|else|artist")
 data <- data %>% filter(!grepl(to_remove, word)) %>% filter(!word %in% stopwords('fr')) %>% filter(!word %in% proust_stopwords()$word)
 
